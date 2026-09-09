@@ -24,13 +24,17 @@ wam_ac/                            # Git 仓库克隆目录
 
 在该结构下，从本目录 `wam_ac/code/base_adaptive_2_10` 出发，原版 Fast-WAM 的
 相对路径是 `../../repos/FastWAM`。这里第一个 `wam_ac/` 是 Git 仓库克隆目录，
-第二个 `wam_ac/` 是仓库内的项目目录。如果本地
-目录结构不同，可以显式设置：
+第二个 `wam_ac/` 是仓库内的项目目录。从 Git 仓库根目录执行下面的命令即可使用
+推荐布局：
 
 ```bash
-export FASTWAM_ROOT=/absolute/path/to/FastWAM
-export DIFFSYNTH_MODEL_BASE_PATH=/absolute/path/to/models
+export WAM_AC_ROOT="$(pwd)/wam_ac"
+export FASTWAM_ROOT="$WAM_AC_ROOT/repos/FastWAM"
+export DIFFSYNTH_MODEL_BASE_PATH="$WAM_AC_ROOT/models"
 ```
+
+`export` 只告诉程序已有目录在哪里，不会创建目录或软链接。如果没有采用推荐布局，
+请直接把变量右侧替换为本机已经存在的真实路径。
 
 ## 2. 方法说明
 
@@ -90,8 +94,7 @@ $FASTWAM_ROOT/checkpoints/fastwam_release/
 ## 4. 安装RoboTwin policy入口
 
 ```bash
-cd /path/to/base_adaptive_2_10
-export FASTWAM_ROOT=/absolute/path/to/FastWAM
+cd wam_ac/code/base_adaptive_2_10
 bash install_policy.sh
 ```
 
@@ -109,8 +112,7 @@ $FASTWAM_ROOT/third_party/RoboTwin/policy/base_adaptive_2_10
 使用默认checkpoint路径：
 
 ```bash
-export FASTWAM_ROOT=/absolute/path/to/FastWAM
-export DIFFSYNTH_MODEL_BASE_PATH=/absolute/path/to/models
+# 以下命令假设当前仍位于 wam_ac/code/base_adaptive_2_10
 
 bash run_robotwin.sh \
   --task blocks_ranking_rgb \
@@ -124,8 +126,8 @@ bash run_robotwin.sh \
 ```bash
 bash run_robotwin.sh \
   --task open_laptop \
-  --checkpoint /path/to/robotwin_uncond_3cam_384.pt \
-  --stats /path/to/robotwin_uncond_3cam_384_dataset_stats.json \
+  --checkpoint "$FASTWAM_ROOT/checkpoints/fastwam_release/robotwin_uncond_3cam_384.pt" \
+  --stats "$FASTWAM_ROOT/checkpoints/fastwam_release/robotwin_uncond_3cam_384_dataset_stats.json" \
   --episodes 20 \
   --gpu 0 \
   --output ./outputs/open_laptop
@@ -161,7 +163,6 @@ chunk的position score、路由决策和真实ActionDiT NFE。运行时终端也
 无需加载模型即可运行FK和输入检查：
 
 ```bash
-export FASTWAM_ROOT=/absolute/path/to/FastWAM
 python -m unittest discover -s tests -v
 ```
 
