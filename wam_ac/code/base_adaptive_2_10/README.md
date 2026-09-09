@@ -11,15 +11,20 @@
 默认按照下面的相对路径寻找 Fast-WAM：
 
 ```text
-wam_ac/
-├── code/
-│   └── base_adaptive_2_10/       # 本目录
-├── repos/
-│   └── FastWAM/                  # 原版 Fast-WAM 仓库
-└── models/                       # Fast-WAM 基础模型组件
+wam_ac/                            # Git 仓库克隆目录
+├── README.md
+└── wam_ac/                       # 项目目录
+    ├── code/
+    │   └── base_adaptive_2_10/   # 本目录
+    ├── repos/
+    │   └── FastWAM/              # 原版 Fast-WAM 仓库
+    ├── models/                   # Fast-WAM 基础模型组件
+    └── outputs/                  # 实验输出与日志
 ```
 
-在该结构下，本目录相对原版 Fast-WAM 的路径是 `../../repos/FastWAM`。如果本地
+在该结构下，从本目录 `wam_ac/code/base_adaptive_2_10` 出发，原版 Fast-WAM 的
+相对路径是 `../../repos/FastWAM`。这里第一个 `wam_ac/` 是 Git 仓库克隆目录，
+第二个 `wam_ac/` 是仓库内的项目目录。如果本地
 目录结构不同，可以显式设置：
 
 ```bash
