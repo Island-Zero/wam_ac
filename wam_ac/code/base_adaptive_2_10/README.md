@@ -180,7 +180,19 @@ python -m unittest discover -s tests -v
 本实现不包含historical overlap、gripper guard、progressive target、动态execution
 horizon、warm start、ActionDiT cache或learned router。
 
-## 8. 完整复现实验的注意事项
+## 8. 运行完整的50-task配对评测
+
+仓库提供了单卡、可断点续跑的一键 campaign，使用同一份冻结 manifest 比较 Full-10
+和 Adaptive 2/10：
+
+```bash
+# 从 Git 仓库根目录执行
+bash wam_ac/code/paired_clean_50x20/run.sh
+```
+
+详细说明见 `wam_ac/code/paired_clean_50x20/README.md`。
+
+## 9. 完整复现实验的注意事项
 
 本目录用于复现方法实现。若要逐数值复现实验结果，还必须冻结：
 

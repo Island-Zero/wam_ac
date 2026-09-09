@@ -8,6 +8,7 @@ STATS="$FASTWAM_ROOT/checkpoints/fastwam_release/robotwin_uncond_3cam_384_datase
 TASK=""
 EPISODES=2
 GPU=0
+SEED=42
 OUTPUT="$HERE/outputs/run"
 SETTING=demo_clean
 
@@ -16,6 +17,7 @@ while [[ $# -gt 0 ]]; do
     --task) TASK="$2"; shift 2 ;;
     --episodes) EPISODES="$2"; shift 2 ;;
     --gpu) GPU="$2"; shift 2 ;;
+    --seed) SEED="$2"; shift 2 ;;
     --output) OUTPUT="$2"; shift 2 ;;
     --checkpoint) CHECKPOINT="$2"; shift 2 ;;
     --stats) STATS="$2"; shift 2 ;;
@@ -45,7 +47,7 @@ python -u script/eval_policy.py \
   --task_name "$TASK" \
   --task_config "$SETTING" \
   --ckpt_setting "$CHECKPOINT" \
-  --seed 42 \
+  --seed "$SEED" \
   --policy_name base_adaptive_2_10 \
   --instruction_type unseen \
   --eval_num_episodes "$EPISODES" \
