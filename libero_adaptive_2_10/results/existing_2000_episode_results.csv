@@ -1,0 +1,4 @@
+method,successes,episodes,success_rate,mean_nfe,protocol
+adaptive,1931,2000,0.9655,3.262263099219621,2026-09-11 persistent worker
+2-step,1922,2000,0.961,2.0,2026-09-11 persistent worker
+10-step,1934,2000,0.967,10,historical timing evaluator

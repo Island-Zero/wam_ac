@@ -1,0 +1,11 @@
+{
+  "fastwam_root": "/path/to/FastWAM",
+  "libero_root": "/path/to/LIBERO",
+  "checkpoint": "/path/to/FastWAM/checkpoints/fastwam_release/libero_uncond_2cam224.pt",
+  "dataset_stats": "/path/to/FastWAM/checkpoints/fastwam_release/libero_uncond_2cam224_dataset_stats.json",
+  "libero_config_path": "/path/to/libero/config",
+  "model_base_path": "/path/to/model/cache",
+  "seed": 42,
+  "sigma_shift": 5.0,
+  "adaptive_threshold": 0.07091929394170104
+}
