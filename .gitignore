@@ -2,11 +2,3 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .DS_Store
-
-# Third-party repositories, model weights, and generated outputs stay local.
-wam_ac/repos/*
-!wam_ac/repos/.gitkeep
-wam_ac/models/*
-!wam_ac/models/.gitkeep
-wam_ac/outputs/*
-!wam_ac/outputs/.gitkeep

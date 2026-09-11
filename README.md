@@ -1,43 +1,25 @@
 # WAM-AC
 
-WAM-AC 是面向 World Action Model 的 training-free 自适应计算项目。
+基于预测动作一致性的 training-free 自适应去噪。本仓库提供 Fast-WAM 在 LIBERO 上的 `adaptive`、`10-step` 与 `2-step` 评测。
 
-RoboTwin 可运行代码放在 [`wam_ac/code`](wam_ac/code)，LIBERO 模块放在 [`libero_adaptive_2_10`](libero_adaptive_2_10)；外部依赖、模型和运行输出只保留约定目录，不提交第三方源码或大文件。
+## 快速开始
 
-推荐从仓库根目录开始：
+先跑通 Fast-WAM 官方 LIBERO 测评，再复用同一 Python 环境、checkpoint 和数据资源。
 
 ```bash
 git clone https://github.com/Island-Zero/wam_ac.git
 cd wam_ac
+cp libero_adaptive_2_10/configs/default.json libero_adaptive_2_10/configs/local.json
 ```
 
-详细目录约定与当前方法入口见 [`wam_ac/README.md`](wam_ac/README.md)。
-
-单卡运行 RoboTwin clean 50 tasks × 20 seeds 的 Full-10/Adaptive 配对评测：
+按 [LIBERO README](libero_adaptive_2_10/README.md) 修改 `local.json` 中的资源路径，然后执行：
 
 ```bash
-bash wam_ac/code/paired_clean_50x20/run.sh
-```
-
-完整层级如下，注意仓库内部还有一层同名的 `wam_ac/` 项目目录：
-
-```text
-wam_ac/                            # Git 仓库克隆目录
-├── README.md
-└── wam_ac/                       # 项目目录
-    ├── code/
-    ├── repos/
-    ├── models/
-    └── outputs/
-```
-
-## LIBERO
-
-已跑通 Fast-WAM 官方 LIBERO 评测后，按 [LIBERO README](libero_adaptive_2_10/README.md) 设置资源路径。支持 `adaptive`、`10-step` 和 `2-step`：
-
-```bash
+# 三种方法各 1 episode 的 smoke
 bash libero_adaptive_2_10/scripts/smoke.sh
+
+# 三种方法各 2,000 episode，默认单路后台运行
 bash libero_adaptive_2_10/scripts/evaluate_2000.sh --detach
 ```
 
-正式评测默认每种方法 2,000 episode。上述路径均相对于 Git 仓库根目录。
+详细方法、配置、结果查看和续跑说明见 [LIBERO 使用说明](libero_adaptive_2_10/README.md)。模型权重、外部依赖、本机配置和运行输出不提交到仓库。
