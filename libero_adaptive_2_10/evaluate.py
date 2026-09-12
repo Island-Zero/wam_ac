@@ -1,7 +1,7 @@
 """Resumable task queue for adaptive, 10-step and 2-step LIBERO evaluation."""
 import argparse,fcntl,hashlib,json,math,os,signal,subprocess,sys,time,traceback
 from pathlib import Path
-from runtime import write_json,method_config
+from runtime import write_json,method_config,load_config
 from summarize import summarize
 ROOT=Path(__file__).resolve().parent
 SUITES=['libero_spatial','libero_object','libero_goal','libero_10']
@@ -25,11 +25,8 @@ def parse_args():
 
 
 def make_plan(args):
-    config=json.loads(args.config.read_text())
+    config=load_config(args.config)
     for k in ['fastwam_root','libero_root','checkpoint','dataset_stats','libero_config_path','model_base_path']:
-        resource=Path(os.path.expandvars(config[k])).expanduser()
-        if not resource.is_absolute():resource=args.config.resolve().parent/resource
-        config[k]=str(resource.resolve())
         if not Path(config[k]).exists():raise ValueError(f'Missing {k}: {config[k]}')
     if not 1<=args.trials<=50:raise ValueError('trials must be 1..50')
     if not math.isfinite(config['adaptive_threshold']) or config['adaptive_threshold']<0:raise ValueError('threshold must be finite and nonnegative')
@@ -79,6 +76,8 @@ def run_locked(args,plan,out):
         write_json(out/'queue'/f'{key}.json',job)
     (out/'STOP').unlink(missing_ok=True)
     if (out/'ERROR.json').exists():(out/'ERROR.json').rename(out/'archive'/f'error_{time.time_ns()}.json')
+    if (out/'provenance.json').exists():
+        (out/'provenance.json').rename(out/'archive'/f'provenance_{time.time_ns()}.json')
     write_json(out/'provenance.json',dict(time=time.time(),python=sys.executable,source_sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in ROOT.glob('*.py')},external_evaluator_sha256=hashlib.sha256((Path(plan['config']['fastwam_root'])/'experiments/libero/eval_libero_single.py').read_bytes()).hexdigest()))
     workers=[];interrupted=False
     def stop(signum,frame):

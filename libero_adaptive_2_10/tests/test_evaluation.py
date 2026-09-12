@@ -6,9 +6,9 @@ import numpy as np
 import torch
 from metrics import action_readouts
 from router import Router
-from runtime import method_config
+from runtime import method_config,load_config
 ROOT=Path(__file__).resolve().parents[1]
-UP=Path(json.loads((Path(os.environ.get('LIBERO_EVAL_CONFIG',str(ROOT/'configs/local.json')))).read_text())['fastwam_root'])
+UP=Path(load_config(Path(os.environ.get('LIBERO_EVAL_CONFIG',str(ROOT/'configs/local.json'))))['fastwam_root'])
 spec=importlib.util.spec_from_file_location('native_scheduler',UP/'src/fastwam/models/wan22/schedulers/scheduler_continuous.py')
 scheduler=importlib.util.module_from_spec(spec);spec.loader.exec_module(scheduler)
 

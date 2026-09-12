@@ -20,3 +20,14 @@ def method_config(name, config):
     if name=='adaptive':return dict(name=name,mode='adaptive',metric='relative_l2',threshold=config['adaptive_threshold'],horizon=10)
     if name in ('10-step','2-step'):return dict(name=name,mode='fixed',nfe=int(name.split('-')[0]))
     raise ValueError(f'Unknown method {name}')
+
+
+def load_config(path):
+    """Resolve resource paths relative to the configuration file."""
+    path=Path(path).expanduser().resolve()
+    config=json.loads(path.read_text())
+    for key in ['fastwam_root','libero_root','checkpoint','dataset_stats','libero_config_path','model_base_path']:
+        resource=Path(os.path.expandvars(config[key])).expanduser()
+        if not resource.is_absolute():resource=path.parent/resource
+        config[key]=str(resource.resolve())
+    return config
